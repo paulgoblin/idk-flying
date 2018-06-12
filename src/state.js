@@ -4,10 +4,17 @@ const rotate = (coords, theta) => {
   const { x, y, z } = coords
   const cosz = Math.cos(theta.z)
   const sinz = Math.sin(theta.z)
-  return {
+  const cosy = Math.cos(theta.y)
+  const siny = Math.sin(theta.y)
+  const A = {
     x: x * cosz - y * sinz,
     y: x * sinz + y * cosz,
     z, 
+  }
+  return {
+    x: A.x * cosy + A.z * siny,
+    y: A.y,
+    z: -A.x * siny + A.z * cosy
   }
 }
 
@@ -31,9 +38,9 @@ class Entity {
     }
   }
 
-  translate({ x = 0, y = 0, z = 0, tz = 0}) {
-    let nextCoords = rotate(this.coords, { z: tz })
-    this.coords = translate(nextCoords, { x, y, z })
+  translate([ tx, ty, ry, rz ]) {
+    let nextCoords = rotate(this.coords, { y: -ry, z: rz })
+    this.coords = translate(nextCoords, { x: -tx, y: ty, z: 0 })
   }
 }
 
@@ -56,9 +63,9 @@ class State {
     ]
   }
 
-  move({ d = 0, t = 0 }) {
+  move(direction) {
     for (let i = 0; i < this.entities.length; i++) {
-      this.entities[i].translate({ x: -d, tz: t })
+      this.entities[i].translate(direction)
     }
   }
 }
