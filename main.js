@@ -12,16 +12,22 @@ view.render()
 
 controller.listen()
 
+const sumVect = (v1, v2) => v1.map((el, i) => el + v2[i])
+
 let i = 20000
 function next(i) {
   if (!i) return;
 
   const { speed, rot } = config
   const movements = {
-    'up': [ speed, 0 ],
-    'down': [ -speed, 0 ],
-    'left': [ 0, rot ],
-    'right': [ 0, -rot ],
+    'strafeL': [ 0, speed, 0, 0 ],
+    'forward': [ speed, 0, 0, 0 ],
+    'strafeR': [ 0, -speed, 0, 0 ],
+    'backward': [ -speed, 0, 0, 0 ],
+    'turnL': [ 0, 0, 0, rot ],
+    'turnU': [ 0, 0, rot, 0 ],
+    'turnR': [ 0, 0, 0, -rot ],
+    'turnD': [ 0, 0, -rot, 0 ],
   }
 
   const inputs = controller.getInputs()
@@ -29,11 +35,11 @@ function next(i) {
   if (inputs) {
     const direction = inputs
     .map(i => movements[i])
-    .reduce(([d0, t0], [d1, t1]) => [d0 + d1, t0 + t1], [0 , 0]) // todo: use math
+    .reduce(sumVect, [0, 0, 0, 0])
 
     const motion = {
       d: direction[0],
-      t: direction[1]
+      t: direction[3]
     }
     state.move(motion)
     view.render()

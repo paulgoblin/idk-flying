@@ -1,8 +1,12 @@
 const keyMap = {
-  '37': 'left',
-  '38': 'up',
-  '39': 'right',
-  '40': 'down',
+  '65': 'strafeL',
+  '87': 'forward',
+  '68': 'strafeR',
+  '83': 'backward',
+  '37': 'turnL',
+  '38': 'turnU',
+  '39': 'turnR',
+  '40': 'turnD',
 }
 
 class Input {
@@ -20,7 +24,7 @@ class Input {
   }
 
   setDirection(direction, val) {
-    console.log('ok');
+    // console.log(direction);
     if (!direction) return
     const i = this.keys.indexOf(direction)
     if (val && i === -1) {
@@ -37,6 +41,7 @@ class Input {
   }
 
   handleKeyDown({ keyCode }) {
+    console.log(keyCode);
     this.setDirection(keyMap[keyCode], true)
   }
 
