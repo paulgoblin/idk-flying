@@ -32,16 +32,12 @@ function next(i) {
 
   const inputs = controller.getInputs()
 
-  if (inputs) {
+  if (inputs.length) {
     const direction = inputs
-    .map(i => movements[i])
-    .reduce(sumVect, [0, 0, 0, 0])
+      .map(i => movements[i])
+      .reduce(sumVect, [0, 0, 0, 0])
 
-    const motion = {
-      d: direction[0],
-      t: direction[3]
-    }
-    state.move(motion)
+    state.move(direction)
     view.render()
   }
 
