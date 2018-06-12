@@ -1,87 +1,44 @@
 import State from './src/state.js'
 import View from './src/view.js'
+import Controller from './src/controller.js'
 import config from './src/config.js'
 
 const state = new State(config)
-console.log(state.entities);
 const view = new View(config, document.getElementById('viewport'), state)
+const controller = new Controller()
+
 view.init()
 view.render()
 
-const keyMap = {
-  '37': 'left',
-  '38': 'up',
-  '39': 'right',
-  '40': 'down',
-}
-class Input {
-  constructor() {
-    this.keys = []
-  }
-
-  getMovement() {
-    return this.keys[0]
-  }
-
-  listen() {
-    document.onkeyup = this.handleKeyUp.bind(this)
-    document.onkeydown = this.handleKeyDown.bind(this)
-  }
-
-  setDirection(direction, val) {
-    if (!direction) return
-    const i = this.keys.indexOf(direction)
-    if (val && i === -1) {
-      this.keys = [
-        direction,
-        ...this.keys
-      ]
-    } else if (!val && i > -1){
-      this.keys = [
-        ...this.keys.slice(0, i),
-        ...this.keys.slice(i + 1),
-      ]
-    }
-  }
-
-  handleKeyDown({ keyCode }) {
-    this.setDirection(keyMap[keyCode], true)
-  }
-
-  handleKeyUp({ keyCode }) {
-    this.setDirection(keyMap[keyCode], false)
-  }
-}
-
-const input = new Input()
-input.listen()
+controller.listen()
 
 let i = 20000
 function next(i) {
   if (!i) return;
-  let moved = true;
 
-  switch (input.getMovement()) {
-    case 'up':
-      state.move({ d: config.speed })
-      break
-    case 'down':
-      state.move({ d: -config.speed })
-      break
-    case 'left':
-      state.move({ t: config.rot })
-      break
-    case 'right':
-      state.move({ t: -config.rot })
-      break
-    default:
-      moved = false
-      break
+  const { speed, rot } = config
+  const movements = {
+    'up': [ speed, 0 ],
+    'down': [ -speed, 0 ],
+    'left': [ 0, rot ],
+    'right': [ 0, -rot ],
   }
 
-  if (moved) {
+  const inputs = controller.getInputs()
+
+  if (inputs) {
+    const direction = inputs
+    .map(i => movements[i])
+    .reduce(([d0, t0], [d1, t1]) => [d0 + d1, t0 + t1], [0 , 0]) // todo: use math
+
+    const motion = {
+      d: direction[0],
+      t: direction[1]
+    }
+    state.move(motion)
     view.render()
   }
+
   setTimeout(() => next(--i), config.framerate)
 }
 
