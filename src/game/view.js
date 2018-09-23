@@ -1,4 +1,4 @@
-import entityTypes from './entity-types.js'
+import entityTypes from '../entity-types.js'
 
 function setStyles(el, styles) {
   let str = ''
@@ -31,12 +31,11 @@ class Figure {
 }
 
 class View {
-  constructor(config, root, game) {
+  constructor(config, root) {
     this.root = root
     this.viewport = config.viewport
     this.fieldOfView = config.fieldOfView
     this.tanT2 = Math.tan(config.fieldOfView.theta / 2)
-    this.game = game
     this.figures = {}
     this.draw = this.draw.bind(this)
   }
@@ -106,8 +105,8 @@ class View {
     figure.show(true)
   }
 
-  render() {
-    for (const point of this.game.points) {
+  render(game) {
+    for (const point of game.points) {
       this.draw(point)
     }
   }
