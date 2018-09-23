@@ -1,14 +1,11 @@
-import { uuid, memoize } from './utils.js';
-
-const cos = memoize(Math.cos)
-const sin = memoize(Math.sin)
+import { uuid } from './utils.js';
 
 function move(start, trans, theta) {
   const { x, y, z } = start
-  const cosz = cos(theta.z)
-  const sinz = sin(theta.z)
-  const cosy = cos(-theta.y)
-  const siny = sin(-theta.y)
+  const cosz = Math.cos(theta.z)
+  const sinz = Math.sin(theta.z)
+  const cosy = Math.cos(-theta.y)
+  const siny = Math.sin(-theta.y)
   const ax = x * cosz - y * sinz
 
   this.coords.x = ax * cosy + z * siny - trans.x;
