@@ -1,15 +1,15 @@
-const keyMap = {
-  '65': 'strafeL',
-  '87': 'forward',
-  '68': 'strafeR',
-  '83': 'backward',
-  '90': 'strafeU',
-  '67': 'strafeD',
-  '37': 'turnL',
-  '38': 'turnU',
-  '39': 'turnR',
-  '40': 'turnD',
-  '38': 'turnU',
+export const keyMap = {
+  'a': 'strafeL',
+  'w': 'forward',
+  ' ': 'forward',
+  'd': 'strafeR',
+  's': 'backward',
+  'z': 'strafeU',
+  'c': 'strafeD',
+  'ArrowLeft': 'turnL',
+  'ArrowUp': 'turnU',
+  'ArrowRight': 'turnR',
+  'ArrowDown': 'turnD',
 }
 
 const movements = {
@@ -69,12 +69,12 @@ class Input {
     }
   }
 
-  handleKeyDown({ keyCode }) {
-    this.setInputs(keyMap[keyCode], true)
+  handleKeyDown({ key }) {
+    this.setInputs(keyMap[key], true)
   }
 
-  handleKeyUp({ keyCode }) {
-    this.setInputs(keyMap[keyCode], false)
+  handleKeyUp({ key }) {
+    this.setInputs(keyMap[key], false)
   }
 }
 
