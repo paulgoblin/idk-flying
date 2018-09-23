@@ -1,4 +1,5 @@
 body {
+  font-family: Sans-Serif;
   background: black;
   display: flex;
   justify-content: center;
@@ -12,7 +13,20 @@ body {
 #root {
   height: 99%;
   width: 99%;
-  margin: auto;
+}
+
+.menu {
+  position: fixed;
+  background: grey;
+  color: white;
+  display: flex;
+  visibility: hidden;
+  padding: 2rem;
+  text-align: center;
+}
+
+.menu th, .menu td {
+  padding: 0.3rem 1rem;
 }
 
 .dot {
