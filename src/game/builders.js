@@ -1,4 +1,4 @@
-import { flatten } from './utils.js'
+import { flatten } from '../utils.js'
 
 const scale = ({ x = 1, y = 1, z = 1 }) => point => ({
   x: x * point.x,

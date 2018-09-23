@@ -1,4 +1,4 @@
-import { uuid } from './utils.js';
+import { uuid } from '../utils.js'
 
 function move(start, trans, theta) {
   const { x, y, z } = start
@@ -8,9 +8,9 @@ function move(start, trans, theta) {
   const siny = Math.sin(-theta.y)
   const ax = x * cosz - y * sinz
 
-  this.coords.x = ax * cosy + z * siny - trans.x;
-  this.coords.y = x * sinz + y * cosz + trans.y;
-  this.coords.z = -ax * siny + z * cosy + trans.z;
+  this.coords.x = ax * cosy + z * siny - trans.x
+  this.coords.y = x * sinz + y * cosz + trans.y
+  this.coords.z = -ax * siny + z * cosy + trans.z
 }
 
 class Point {
