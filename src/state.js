@@ -1,74 +1,53 @@
-import { uuid } from './utils.js';
+import { uuid, memoize } from './utils.js';
 
-const rotate = (coords, theta) => {
-  const { x, y, z } = coords
-  const cosz = Math.cos(theta.z)
-  const sinz = Math.sin(theta.z)
-  const cosy = Math.cos(theta.y)
-  const siny = Math.sin(theta.y)
-  const A = {
-    x: x * cosz - y * sinz,
-    y: x * sinz + y * cosz,
-    z, 
-  }
-  return {
-    x: A.x * cosy + A.z * siny,
-    y: A.y,
-    z: -A.x * siny + A.z * cosy
-  }
+const cos = memoize(Math.cos)
+const sin = memoize(Math.sin)
+
+function move(start, trans, theta) {
+  const { x, y, z } = start
+  const cosz = cos(theta.z)
+  const sinz = sin(theta.z)
+  const cosy = cos(-theta.y)
+  const siny = sin(-theta.y)
+  const ax = x * cosz - y * sinz
+
+  this.coords.x = ax * cosy + z * siny - trans.x;
+  this.coords.y = x * sinz + y * cosz + trans.y;
+  this.coords.z = -ax * siny + z * cosy + trans.z;
 }
 
-const translate = (coords, v) => {
-  const { x, y, z } = coords
-  return {
-    x: x + v.x,
-    y: y + v.y,
-    z: z + v.z,
-  }
-}
-
-class Entity {
+class Point {
   constructor({ coords = {}, type }) {
     this.id = uuid()
-    this.type = type || 'star'
+    this.move = move.bind(this)
+    this.type = type || 'dot'
     this.coords = {
       x: coords.x || 0,
       y: coords.y || 0,
       z: coords.z || 0
     }
   }
-
-  translate([ tx, ty, ry, rz ]) {
-    let nextCoords = rotate(this.coords, { y: -ry, z: rz })
-    this.coords = translate(nextCoords, { x: -tx, y: ty, z: 0 })
-  }
 }
 
 class State {
   constructor(config) {
-    this.entities = [
-      new Entity({ coords: { x: 3, y: 0, z: 0 }}),
-      new Entity({ coords: { x: 3, y: 1, z: 0 }}),
-      new Entity({ coords: { x: 3, y: -1, z: 0 }}),
-      new Entity({ coords: { x: 3, y: 0, z: -1 }}),
-      new Entity({ coords: { x: 3, y: 0, z: 1 }}),
-      new Entity({ coords: { x: 10, y: 10, z: 2 }}),
-      new Entity({ coords: { x: -10, y: 10, z: 2 }}),
-      new Entity({ coords: { x: 10, y: -10, z: 2 }}),
-      new Entity({ coords: { x: 10, y: 10, z: -2 }}),
-      new Entity({ coords: { x: 10, y: -10, z: -2 }}),
-      new Entity({ coords: { x: -10, y: -10, z: 2 }}),
-      new Entity({ coords: { x: -10, y: 10, z: -2 }}),
-      new Entity({ coords: { x: -10, y: -10, z: -2 }}),
-    ]
+    this.points = []
+  }
+
+  add(manyCoordinates) {
+    this.points = manyCoordinates
+      .map(coords => new Point({ coords }))
+      .concat(this.points)
   }
 
   move(direction) {
-    for (let i = 0; i < this.entities.length; i++) {
-      this.entities[i].translate(direction)
+    const [ tx, ty, tz, ry, rz ] = direction
+    const trans = { x: tx, y: ty, z: tz }
+    const rot = { y: ry, z: rz }
+    for (const point of this.points) {
+      point.move(point.coords, trans, rot )
     }
   }
 }
-
 
 export default State
