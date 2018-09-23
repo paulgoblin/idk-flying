@@ -1,7 +1,6 @@
 const types = {
-  star: {
-    color: 'white',
-    size: 180
+  dot: {
+    size: 500
   }
 }
 
