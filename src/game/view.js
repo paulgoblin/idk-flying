@@ -1,12 +1,5 @@
 import entityTypes from '../entity-types.js'
-
-function setStyles(el, styles) {
-  let str = ''
-  for (const style in styles) {
-    str += (style + ':' + styles[style] + ';')
-  }
-  el.setAttribute('style', str)
-}
+import { setStyles } from '../utils.js'
 
 function dist({ x, y, z }) {
   return Math.abs(x) + Math.abs(y) + Math.abs(z)

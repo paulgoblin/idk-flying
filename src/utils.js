@@ -9,3 +9,15 @@ export function flatten(arr) {
 export function flatMap(arr, fn) {
   return flatten(arr.map(fn))
 }
+
+export function getRandom(arr) {
+  return arr[Math.floor(Math.random()*arr.length)]
+}
+
+export function setStyles(el, styles) {
+  let str = ''
+  for (const style in styles) {
+    str += (style + ':' + styles[style] + ';')
+  }
+  el.setAttribute('style', str)
+}

@@ -23,7 +23,9 @@ class Runner {
   init() {
     const n = this.config.n
     const spacing = 5
+    const offset = spacing * (n - 1)  / 2
     this.state.add(grid({ p: n, q: n, r: n }, spacing))
+    this.state.move([ -2*offset, -offset, -offset, 0, 0 ])
     this.view.init()
     this.view.render(this.state)
     this.input.listen()
