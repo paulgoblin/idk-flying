@@ -31,19 +31,16 @@ class Figure {
 }
 
 class View {
-  constructor(config, root) {
-    this.root = root
+  constructor(config) {
+    this.root = config.root
     this.viewport = config.viewport
     this.fieldOfView = config.fieldOfView
-    this.tanT2 = Math.tan(config.fieldOfView.theta / 2)
     this.figures = {}
     this.draw = this.draw.bind(this)
   }
 
   init() {
     setStyles(this.root, {
-      height: `${this.viewport.height}px`,
-      width: `${this.viewport.width}px`,
       border: '1px solid grey',
       overflow: 'hidden',
       position: 'relative'
@@ -64,7 +61,7 @@ class View {
     const { coords, type } = entity
     const { size } = entityTypes[type]
     const { x, y, z } = coords
-    const scale = (x * this.tanT2)
+    const scale = (x * this.fieldOfView.tanTheta)
 
     return {
       y: y / scale,
