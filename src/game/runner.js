@@ -25,7 +25,7 @@ class Runner {
   init() {
     const n = 6
     const spacing = 7
-    const offset = spacing
+    const offset = spacing * n / 2
     this.state.add(grid({ p: n, q: n, r: n }, spacing))
     this.state.move([
       0, 0, 0,
