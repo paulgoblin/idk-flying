@@ -90,7 +90,7 @@ class View {
     const closeness = Math.max(range - p.d, 0) / range
     const left = width * (p.y + 1) / 2 - p.width / 2
     const top = (width * (p.z + 1) / 2) - ((width - height) / 2) - p.height / 2
-    const colorAmt = Math.floor(255 * closeness).toString(16)
+    const colorAmt = ("0" + Math.floor(255 * closeness).toString(16)).slice(-2)
     setStyles(figure.node, {
       background: '#' + colorAmt + colorAmt + colorAmt,
       height: `${Math.floor(p.height)}px`,
