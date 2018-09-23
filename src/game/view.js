@@ -59,8 +59,8 @@ class View {
     return {
       y: y / scale,
       z: z / scale,
-      width: size / scale, // size * scale,
-      height: size / scale, // size * scale,
+      width: size * this.viewport.width / scale, // size * scale,
+      height: size * this.viewport.width / scale, // size * scale,
       d: dist(coords)
     }
   }

@@ -12,20 +12,31 @@ class Runner {
     this.running = false
   }
 
-  _nextFrame() {
+  _nextFrame() { // returns time to render
     const direction = this.input.getDirection()
+    const start = performance.now();
     if (direction.some(d => !!d)) {
       this.state.move(direction)
       this.view.render(this.state)
     }
+    return performance.now() - start
   }
 
   init() {
-    const n = this.config.n
-    const spacing = 5
-    const offset = spacing * (n - 1)  / 2
+    const n = 6
+    const spacing = 7
+    const offset = spacing
     this.state.add(grid({ p: n, q: n, r: n }, spacing))
-    this.state.move([ -2*offset, -offset, -offset, 0, 0 ])
+    this.state.move([
+      0, 0, 0,
+      (-45 / 180) * Math.PI,
+      (-45 / 180) * Math.PI
+    ])
+    this.state.move([
+      -offset, 0, 0,
+      (10 / 180) * Math.PI, // mysterious ... ?
+      0
+    ])
     this.view.init()
     this.view.render(this.state)
     this.input.listen()
@@ -33,11 +44,11 @@ class Runner {
 
   start() {
     this.running = true
-
     function next() {
       if (!this.running) return
-      this._nextFrame()
-      setTimeout(next.bind(this), this.config.framerate)
+      const renderTime = this._nextFrame()
+      console.log(renderTime)
+      setTimeout(next.bind(this), this.config.framerate - renderTime)
     }
 
     next.bind(this)()

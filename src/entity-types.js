@@ -1,6 +1,6 @@
 const types = {
   dot: {
-    size: 500
+    size: 1.2
   }
 }
 

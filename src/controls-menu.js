@@ -14,10 +14,17 @@ const colors = [
     'cadetblue',
 ]
 
+const defaultProps = {
+    onClose: () => {}
+}
+
 class ControlsMenu {
-    constructor(config) {
-        this.config = config;
-        this.node = document.getElementById(config.id)
+    constructor(props) {
+        this.props = {
+            ...defaultProps,
+            ...props
+        };
+        this.node = document.getElementById(props.id)
         this.node.addEventListener('click', this.close.bind(this))
         document.addEventListener('keydown', this.closeOnKeyPress.bind(this))
         this.isOpen = false;
@@ -36,7 +43,7 @@ class ControlsMenu {
             visibility: 'hidden'
         })
         this.isOpen = false;
-        this.config.onClose()
+        this.props.onClose()
     }
 
     closeOnKeyPress({ key }) {
