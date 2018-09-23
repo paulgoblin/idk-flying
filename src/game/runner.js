@@ -7,7 +7,7 @@ class Runner {
   constructor(config) {
     this.config = config
     this.state = new State(config)
-    this.view = new View(config, document.getElementById('viewport'))
+    this.view = new View(config)
     this.input = new Input(config)
     this.running = false
   }

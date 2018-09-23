@@ -9,6 +9,12 @@ body {
   width: 100vw;
 }
 
+#root {
+  height: 99%;
+  width: 99%;
+  margin: auto;
+}
+
 .dot {
   border-radius: 50%;
   border: 1px solid black;
