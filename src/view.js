@@ -17,12 +17,14 @@ class Figure {
     this.id = config.id
     this.node = document.createElement("div")
     this.node.setAttribute('class', config.type)
-    this.isShown = config.isShown
+    this.isShown = true
   }
 
   show(doShow = true) {
-    if (!doShow && this.isShown) {
-      this.isShown = false;
+    if (doShow === this.isShown) return
+
+    this.isShown = doShow
+    if (!doShow) {
       this.node.setAttribute('style', 'display: none;')
     }
   }
@@ -61,7 +63,7 @@ class View {
 
   project(entity) {
     const { coords, type } = entity
-    const { size, color } = entityTypes[type]
+    const { size } = entityTypes[type]
     const { x, y, z } = coords
     const scale = (x * this.tanT2)
 
@@ -70,13 +72,13 @@ class View {
       z: z / scale,
       width: size / scale, // size * scale,
       height: size / scale, // size * scale,
-      d: dist(coords),
-      color,
+      d: dist(coords)
     }
   }
 
   draw(entity) {
     const figure = this.getFigure(entity)
+
     if (entity.coords.x < 0) {
       figure.show(false)
       return
@@ -92,7 +94,6 @@ class View {
     const left = width * (p.y + 1) / 2 - p.width / 2
     const top = (width * (p.z + 1) / 2) - ((width - height) / 2) - p.height / 2
     const colorAmt = Math.floor(255 * closeness).toString(16)
-
     setStyles(figure.node, {
       background: '#' + colorAmt + colorAmt + colorAmt,
       height: `${Math.floor(p.height)}px`,
@@ -100,6 +101,8 @@ class View {
       'z-index': -Math.floor(p.d),
       transform: `translate(${Math.floor(left)}px, ${Math.floor(top)}px)`
     })
+
+    figure.show(true)
   }
 
   render() {

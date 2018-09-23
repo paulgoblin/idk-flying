@@ -1,6 +1,6 @@
 
 const config = {
-  n: 10,
+  n: 1,
   speed: 0.2,
   rot: 2 / 180 * Math.PI,
   viewport: {

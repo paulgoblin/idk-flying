@@ -1,15 +1,14 @@
 import State from './src/state.js'
 import View from './src/view.js'
 import Input from './src/input.js'
-import { cross, cube, grid } from './src/builders.js'
+import { grid } from './src/builders.js'
 import config from './src/config.js'
 
 const state = new State(config)
 const view = new View(config, document.getElementById('viewport'), state)
 const input = new Input(config)
 
-// state.add(cross(1))
-const n = 3
+const n = config.n
 state.add(grid({ p: n, q: n, r: n }, 5))
 
 view.init()

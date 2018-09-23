@@ -24,7 +24,6 @@ class Input {
   }
 
   setDirection(direction, val) {
-    // console.log(direction);
     if (!direction) return
     const i = this.keys.indexOf(direction)
     if (val && i === -1) {
@@ -41,7 +40,6 @@ class Input {
   }
 
   handleKeyDown({ keyCode }) {
-    console.log(keyCode);
     this.setDirection(keyMap[keyCode], true)
   }
 

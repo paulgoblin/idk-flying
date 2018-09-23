@@ -70,7 +70,6 @@ class Input {
   }
 
   handleKeyDown({ keyCode }) {
-    console.log('KEYCODE', keyCode);
     this.setInputs(keyMap[keyCode], true)
   }
 
