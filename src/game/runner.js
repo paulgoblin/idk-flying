@@ -47,7 +47,6 @@ class Runner {
     function next() {
       if (!this.running) return
       const renderTime = this._nextFrame()
-      console.log(renderTime)
       setTimeout(next.bind(this), this.config.framerate - renderTime)
     }
 
