@@ -91,7 +91,7 @@ class View {
     const top = (width * (p.z + 1) / 2) - ((width - height) / 2) - p.height / 2
     const colorAmt = Math.floor(255 * closeness)
     setStyles(figure.node, {
-      background: `rgba(${colorAmt}, ${colorAmt}, ${colorAmt})`,
+      background: `rgb(${colorAmt}, ${colorAmt}, ${colorAmt})`,
       'border-radius': '50%',
       height: `${Math.floor(p.height)}px`,
       width: `${Math.floor(p.width)}px`,

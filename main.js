@@ -9,7 +9,7 @@ const view = new View(config, document.getElementById('viewport'), state)
 const input = new Input(config)
 
 // state.add(cross(1))
-const n = 6
+const n = 3
 state.add(grid({ p: n, q: n, r: n }, 5))
 
 view.init()
