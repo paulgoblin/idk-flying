@@ -12,16 +12,18 @@ class Runner {
     this.running = false
   }
 
-  _nextFrame() {
+  _nextFrame() { // returns time to render
     const direction = this.input.getDirection()
+    const start = performance.now();
     if (direction.some(d => !!d)) {
       this.state.move(direction)
       this.view.render(this.state)
     }
+    return performance.now() - start
   }
 
   init() {
-    const n = 10
+    const n = 6
     const spacing = 7
     const offset = spacing
     this.state.add(grid({ p: n, q: n, r: n }, spacing))
@@ -42,11 +44,11 @@ class Runner {
 
   start() {
     this.running = true
-
     function next() {
       if (!this.running) return
-      this._nextFrame()
-      setTimeout(next.bind(this), this.config.framerate)
+      const renderTime = this._nextFrame()
+      console.log(renderTime)
+      setTimeout(next.bind(this), this.config.framerate - renderTime)
     }
 
     next.bind(this)()
