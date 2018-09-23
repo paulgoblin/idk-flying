@@ -16,6 +16,7 @@ class Figure {
   constructor(config) {
     this.id = config.id
     this.node = document.createElement("div")
+    this.node.setAttribute('class', config.type)
     this.isShown = config.isShown
   }
 
@@ -48,11 +49,12 @@ class View {
     })
   }
 
-  getFigure(id) {
+  getFigure(entity) {
+    const { id, type } = entity
     if (this.figures[id]) {
       return this.figures[id]
     }
-    const figure = this.figures[id] = new Figure({ id }) 
+    const figure = this.figures[id] = new Figure(entity)
     this.root.appendChild(figure.node)
     return figure
   }
@@ -74,7 +76,7 @@ class View {
   }
 
   draw(entity) {
-    const figure = this.getFigure(entity.id)
+    const figure = this.getFigure(entity)
     if (entity.coords.x < 0) {
       figure.show(false)
       return
@@ -89,14 +91,12 @@ class View {
     const closeness = Math.max(range - p.d, 0) / range
     const left = width * (p.y + 1) / 2 - p.width / 2
     const top = (width * (p.z + 1) / 2) - ((width - height) / 2) - p.height / 2
-    const colorAmt = Math.floor(255 * closeness)
+    const colorAmt = Math.floor(255 * closeness).toString(16)
+
     setStyles(figure.node, {
-      background: `rgb(${colorAmt}, ${colorAmt}, ${colorAmt})`,
-      'border-radius': '50%',
+      background: '#' + colorAmt + colorAmt + colorAmt,
       height: `${Math.floor(p.height)}px`,
       width: `${Math.floor(p.width)}px`,
-      position: 'absolute',
-      border: '1px solid black',
       'z-index': -Math.floor(p.d),
       transform: `translate(${Math.floor(left)}px, ${Math.floor(top)}px)`
     })
