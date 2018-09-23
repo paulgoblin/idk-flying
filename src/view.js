@@ -52,7 +52,7 @@ class View {
   }
 
   getFigure(entity) {
-    const { id, type } = entity
+    const { id } = entity
     if (this.figures[id]) {
       return this.figures[id]
     }
@@ -85,6 +85,7 @@ class View {
     }
     const { range } = this.fieldOfView
     const { width, height } = this.viewport
+
     const p = this.project(entity)
     if (p.d > range) {
       figure.show(false)
