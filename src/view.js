@@ -12,6 +12,21 @@ function dist({ x, y, z }) {
   return Math.abs(x) + Math.abs(y) + Math.abs(z)
 }
 
+class Figure {
+  constructor(config) {
+    this.id = config.id
+    this.node = document.createElement("div")
+    this.isShown = config.isShown
+  }
+
+  show(doShow = true) {
+    if (!doShow && this.isShown) {
+      this.isShown = false;
+      this.node.setAttribute('style', 'display: none;')
+    }
+  }
+}
+
 class View {
   constructor(config, root, game) {
     this.root = root
@@ -20,6 +35,7 @@ class View {
     this.tanT2 = Math.tan(config.fieldOfView.theta / 2)
     this.game = game
     this.figures = {}
+    this.draw = this.draw.bind(this)
   }
 
   init() {
@@ -36,10 +52,7 @@ class View {
     if (this.figures[id]) {
       return this.figures[id]
     }
-    const figure = this.figures[id] = {
-      id,
-      node: document.createElement("div")
-    }
+    const figure = this.figures[id] = new Figure({ id }) 
     this.root.appendChild(figure.node)
     return figure
   }
@@ -63,31 +76,36 @@ class View {
   draw(entity) {
     const figure = this.getFigure(entity.id)
     if (entity.coords.x < 0) {
-      setStyles(figure.node, { display: 'none' })
-      return 
+      figure.show(false)
+      return
     }
     const { range } = this.fieldOfView
     const { width, height } = this.viewport
     const p = this.project(entity)
+    if (p.d > range) {
+      figure.show(false)
+      return
+    }
     const closeness = Math.max(range - p.d, 0) / range
     const left = width * (p.y + 1) / 2 - p.width / 2
     const top = (width * (p.z + 1) / 2) - ((width - height) / 2) - p.height / 2
-
+    const colorAmt = Math.floor(255 * closeness)
     setStyles(figure.node, {
-      background: p.color,
+      background: `rgba(${colorAmt}, ${colorAmt}, ${colorAmt})`,
       'border-radius': '50%',
       height: `${Math.floor(p.height)}px`,
       width: `${Math.floor(p.width)}px`,
       position: 'absolute',
-      'font-size': '10px',
-      opacity: `${closeness}`,
+      border: '1px solid black',
+      'z-index': -Math.floor(p.d),
       transform: `translate(${Math.floor(left)}px, ${Math.floor(top)}px)`
     })
   }
 
   render() {
-    this.game.entities
-      .forEach(this.draw.bind(this))
+    for (const point of this.game.points) {
+      this.draw(point)
+    }
   }
 }
 

@@ -8,7 +8,7 @@ const config = {
     height: 690
   },
   fieldOfView: {
-    range: 200,
+    range: 100,
     theta: 120 / 180 * Math.PI
   },
   framerate: Math.floor(1000 / 60), // (ms)
