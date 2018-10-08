@@ -10,16 +10,19 @@ class Runner {
     this.view = new View(config)
     this.input = new Input(config)
     this.running = false
+
+    this._nextFrame = this._nextFrame.bind(this)
   }
 
-  _nextFrame() { // returns time to render
+  _nextFrame() {
     const direction = this.input.getDirection()
-    const start = performance.now();
     if (direction.some(d => !!d)) {
       this.state.move(direction)
       this.view.render(this.state)
     }
-    return performance.now() - start
+    if (this.running) {
+      requestAnimationFrame(this._nextFrame)
+    }
   }
 
   init() {
@@ -44,13 +47,7 @@ class Runner {
 
   start() {
     this.running = true
-    function next() {
-      if (!this.running) return
-      const renderTime = this._nextFrame()
-      setTimeout(next.bind(this), this.config.framerate - renderTime)
-    }
-
-    next.bind(this)()
+    requestAnimationFrame(this._nextFrame)
   }
 
   stop() {
